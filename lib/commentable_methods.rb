@@ -1,4 +1,5 @@
 require 'active_record'
+require "rails/version"
 
 # ActsAsCommentable
 module Juixe
@@ -24,6 +25,14 @@ module Juixe
           has_many "#{role.to_s}_comments".to_sym,
                    -> { where(role: role.to_s) },
                    has_many_options(role)
+        end
+
+        def define_role_based_inflection_5(role)
+          define_role_based_inflection_4(role)
+        end
+
+        def define_role_based_inflection_6(role)
+          define_role_based_inflection_4(role)
         end
 
         def has_many_options(role)
