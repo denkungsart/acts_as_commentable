@@ -42,7 +42,7 @@ class ActsAsCommentableTest < Minitest::Test
     refute_nil wall.public_comments.create(:title => "comment.", :comment => "This is the a comment.").id
     refute_nil wall.private_comments.create(:title => "comment.", :comment => "This is the a comment.").id
     assert_raises NoMethodError do
-      wall.comments.create(:title => "Comment", :title => "Title")
+      wall.comments.create(:title => "Title")
     end
   end
 
@@ -78,7 +78,7 @@ class ActsAsCommentableTest < Minitest::Test
 
   def test_find_commentable
     post = Post.create(:text => "Awesome post !")
-    comment = post.comments.create(:title => "First comment.", :comment => "This is the first comment.")
+    post.comments.create(:title => "First comment.", :comment => "This is the first comment.")
     assert_equal post, Comment.find_commentable(post.class.name, post.id) 
   end
 
