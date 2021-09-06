@@ -27,4 +27,8 @@ Gem::Specification.new do |s|
     end
   else
   end
+
+  s.add_dependency "rails", ">= 3.2.0"
+  s.add_development_dependency "minitest"
+  s.add_development_dependency "sqlite3"
 end

@@ -1,7 +1,3 @@
-source 'http://rubygems.org'
-gemspec
+source 'https://rubygems.org'
 
-group :development do
-  gem 'rails'
-  gem 'sqlite3'
-end
+gemspec
