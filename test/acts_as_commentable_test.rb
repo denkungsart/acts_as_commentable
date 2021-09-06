@@ -1,6 +1,5 @@
 require 'minitest/autorun'
 require 'logger'
-require 'pry'
 require File.expand_path(File.dirname(__FILE__) + '/../rails/init')
 
 ActiveRecord::Migration.verbose = false
@@ -32,12 +31,12 @@ class ActsAsCommentableTest < Minitest::Test
 
   def test_create_comment
     post = Post.create(:text => "Awesome post !")
-    assert_not_nil post.comments.create(:title => "comment.", :comment => "This is the a comment.").id
+    refute_nil post.comments.create(:title => "comment.", :comment => "This is the a comment.").id
 
     wall = Wall.create(:name => "My Wall")
-    assert_not_nil wall.public_comments.create(:title => "comment.", :comment => "This is the a comment.").id
-    assert_not_nil wall.private_comments.create(:title => "comment.", :comment => "This is the a comment.").id
-    assert_raise NoMethodError do
+    refute_nil wall.public_comments.create(:title => "comment.", :comment => "This is the a comment.").id
+    refute_nil wall.private_comments.create(:title => "comment.", :comment => "This is the a comment.").id
+    assert_raises NoMethodError do
       wall.comments.create(:title => "Comment", :title => "Title")
     end
   end
