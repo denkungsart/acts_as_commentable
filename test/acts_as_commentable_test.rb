@@ -5,6 +5,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../rails/init')
 ActiveRecord::Migration.verbose = false
 ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
 
+
+
 class ActsAsCommentableTest < Minitest::Test
 
   def setup_comments
@@ -19,14 +21,17 @@ class ActsAsCommentableTest < Minitest::Test
   end
 
   def setup
+    return if defined?(Post)
+
     setup_comments
     setup_test_models
   end
 
   def teardown
-    ActiveRecord::Base.connection.tables.each do |table|
-      ActiveRecord::Base.connection.drop_table(table)
-    end
+    Comment.delete_all
+    Post.delete_all
+    User.delete_all
+    Wall.delete_all
   end
 
   def test_create_comment
@@ -44,7 +49,7 @@ class ActsAsCommentableTest < Minitest::Test
   def test_fetch_comments
     post = Post.create(:text => "Awesome post !")
     post.comments.create(:title => "First comment.", :comment => "This is the first comment.")
-    commentable = Post.find(1)
+    commentable = Post.find(post.id)
     assert_equal 1, commentable.comments.length
     assert_equal "First comment.", commentable.comments.first.title
     assert_equal "This is the first comment.", commentable.comments.first.comment
