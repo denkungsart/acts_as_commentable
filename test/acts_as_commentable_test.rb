@@ -1,4 +1,4 @@
-require 'test/unit'
+require 'minitest/autorun'
 require 'logger'
 require 'pry'
 require File.expand_path(File.dirname(__FILE__) + '/../rails/init')
@@ -6,7 +6,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../rails/init')
 ActiveRecord::Migration.verbose = false
 ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
 
-class ActsAsCommentableTest < Test::Unit::TestCase
+class ActsAsCommentableTest < Minitest::Test
 
   def setup_comments
     require File.expand_path(File.dirname(__FILE__) + '/../lib/generators/comment/templates/create_comments') 
