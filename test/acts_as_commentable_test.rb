@@ -174,4 +174,10 @@ class ActsAsCommentableTest < Minitest::Test
     assert_equal false, public_comment.is_comment_type?(:comment)
   end
 
+  def test_custom_comment_class
+    wall = Wall.create(:name => "wall")
+    foo_comment = wall.foo_comments.create(comment: 'Super comment')
+    assert_equal FooComment, foo_comment.class
+    assert_equal "Foo Super comment", foo_comment.comment
+  end
 end

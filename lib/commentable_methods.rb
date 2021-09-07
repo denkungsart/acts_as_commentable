@@ -12,36 +12,36 @@ module Juixe
 
       module HelperMethods
         private
-        def define_role_based_inflection(role)
-          send("define_role_based_inflection_#{Rails.version.first}", role)
+        def define_role_based_inflection(role, join_options)
+          send("define_role_based_inflection_#{Rails.version.first}", role, join_options)
         end
 
-        def define_role_based_inflection_3(role)
+        def define_role_based_inflection_3(role, join_options)
           has_many "#{role.to_s}_comments".to_sym,
-                   has_many_options(role).merge(:conditions => { role: role.to_s })
+                   has_many_options(role, join_options).merge(:conditions => { role: role.to_s })
         end
 
-        def define_role_based_inflection_4(role)
+        def define_role_based_inflection_4(role, join_options)
           has_many "#{role.to_s}_comments".to_sym,
                    -> { where(role: role.to_s) },
-                   has_many_options(role)
+                   has_many_options(role, join_options)
         end
 
-        def define_role_based_inflection_5(role)
-          define_role_based_inflection_4(role)
+        def define_role_based_inflection_5(role, join_options)
+          define_role_based_inflection_4(role, join_options)
         end
 
-        def define_role_based_inflection_6(role)
-          define_role_based_inflection_4(role)
+        def define_role_based_inflection_6(role, join_options)
+          define_role_based_inflection_4(role, join_options)
         end
 
-        def has_many_options(role)
+        def has_many_options(role, join_options)
           {:class_name => "Comment",
                   :as => :commentable,
                   :inverse_of => :commentable,
                   :dependent => :destroy,
                   :before_add => Proc.new { |x, c| c.role = role.to_s }
-          }
+          }.merge(join_options)
         end
       end
 
@@ -61,7 +61,7 @@ module Juixe
 
           if !comment_roles.blank?
             comment_roles.each do |role|
-              define_role_based_inflection(role)
+              define_role_based_inflection(role, join_options)
             end
             has_many :all_comments, { :as => :commentable, :inverse_of => :commentable, :dependent => :destroy, class_name: 'Comment' }.merge(join_options)
           else
