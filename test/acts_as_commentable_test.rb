@@ -180,4 +180,9 @@ class ActsAsCommentableTest < Minitest::Test
     assert_equal FooComment, foo_comment.class
     assert_equal "Foo Super comment", foo_comment.comment
   end
+
+  def test_index_exists
+    assert Comment.connection.index_exists?(:comments, :user_id)
+    assert Comment.connection.index_exists?(:comments, [:commentable_type, :commentable_id])
+  end
 end
