@@ -23,7 +23,7 @@ module Juixe
 
           has_many "#{role.to_s}_comments".to_sym,
                    -> { where(role: role.to_s) },
-                   options
+                   **options
         end
       end
 
@@ -45,9 +45,9 @@ module Juixe
             comment_roles.each do |role|
               define_role_based_inflection(role, join_options)
             end
-            has_many :all_comments, { :as => :commentable, :inverse_of => :commentable, :dependent => :destroy, class_name: 'Comment' }.merge(join_options)
+            has_many :all_comments, **{ :as => :commentable, :inverse_of => :commentable, :dependent => :destroy, class_name: 'Comment' }.merge(join_options)
           else
-            has_many :comments, {:as => :commentable, :inverse_of => :commentable, :dependent => :destroy}.merge(join_options)
+            has_many :comments, **{:as => :commentable, :inverse_of => :commentable, :dependent => :destroy}.merge(join_options)
           end
 
           comment_types.each do |role|
